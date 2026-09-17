@@ -52,6 +52,44 @@ FROM pizza_sales;
 ```
 <img width="229" height="81" alt="image" src="https://github.com/user-attachments/assets/c18c885d-2e53-4a04-882b-88ed8852f4a7" />
 
+### 6. Daily Trend for Total Sales
+Analyzes the total sales distribution across different days of the week to identify peak business days.
+```sql
+SELECT DATENAME(DW, order_date) AS 'DayName', 
+       CAST(SUM(total_price) AS DECIMAL(10,2)) AS total_sales
+FROM pizza_sales
+GROUP BY DATENAME(DW, order_date)
+ORDER BY SUM(total_price) DESC;
+```
+<img width="245" height="230" alt="image" src="https://github.com/user-attachments/assets/ad9ad1ef-107f-406a-8073-a118a10e5318" />
+
+
+### 7. Monthly Trend for Total Sales
+Monitors sales performance on a monthly basis to identify seasonal trends and high-performing months.
+```sql
+SELECT DATENAME(MONTH, order_date) AS 'DayName', 
+       CAST(SUM(total_price) AS DECIMAL(10,2)) AS total_sales
+FROM pizza_sales
+GROUP BY DATENAME(MONTH, order_date)
+ORDER BY SUM(total_price) DESC;
+```
+<img width="310" height="341" alt="image" src="https://github.com/user-attachments/assets/db447273-82a8-4b8f-89e6-2a6cc1e70a86" />
+
+
+### 8. Percentage of Sales by Pizza Category
+Calculates the total sales and the percentage contribution (PCT) of each pizza category to the overall revenue.
+```sql
+SELECT pizza_category, 
+       CAST(SUM(total_price) AS DECIMAL(10,2)) AS total_sales,
+       CONVERT(DECIMAL(10,2), SUM(total_price) * 100 / (SELECT SUM(total_price) FROM pizza_sales)) AS PCT
+FROM pizza_sales
+GROUP BY pizza_category
+ORDER BY SUM(total_price) DESC;
+```
+<img width="368" height="152" alt="image" src="https://github.com/user-attachments/assets/98c35875-061c-4496-987c-ff111f699dcd" />
+
+
+
 
 ---
 
